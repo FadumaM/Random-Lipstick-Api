@@ -1,1 +1,1 @@
-# Random-Lipstick-Angular
+# Random-Mac-Lipstick-Angular
