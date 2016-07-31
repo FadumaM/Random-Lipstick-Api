@@ -1,48 +1,56 @@
-var rp = require("request-promise");
-var cheerio = require("cheerio");
-var mongoose = require("mongoose");
-var config = require("./config/config");
+var express         = require('express');
+var morgan          = require('morgan');
+var methodOverride  = require('method-override');
+var bodyParser      = require('body-parser');
+var mongoose        = require('mongoose');
+var config          = require('./config/config');
+var app             = express();
 
+mongoose.connect(config.database);
 
-mongoose.connect(config.database, function() {
-    console.log("Connected with database");
+require('./config/passport')(passport);
+
+app.use(morgan('dev'));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(methodOverride(function (req, res) {
+  if (req.body && typeof req.body === 'object' && '_method' in req.body) {
+    var method = req.body._method;
+    delete req.body._method;
+    return method;
+  }
+}));
+
+app.use(passport.initialize());
+
+app.use('/api', expressJWT({ secret: config.secret })
+.unless({
+  path: [
+    { url: '/api/login', methods: ['POST'] },
+    { url: '/api/register', methods: ['POST'] },
+  ],
+}));
+
+app.use(function (err, req, res, next) {
+  if (err.name === 'UnauthorizedError') {
+    return res.status(401).json({ message: 'Unauthorized request.' });
+  }
+
+  next();
 });
 
+//****** Routing *******//
+var routes = require('./config/routes');
+app.use('/api', routes);
 
-var Colorurl = "http://www.maccosmetics.co.uk/product/13854/310/Products/Makeup/Lips/Lipstick/Lipstick";
+//******** Front End ********* //
+app.use('/', express.static(__dirname + '/public'));
+app.use('/', express.static(__dirname + '/bower_components'));
 
-var Nameurl = "http://www.maccosmetics.co.uk/product/13854/310/Products/Makeup/Lips/Lipstick/Lipstick#/shade/Finally_Free_%28ONLINE_EXCLUSIVE%29";
+app.get('/*', function (req, res) {
+    res.sendFile(__dirname + '/public/index.html');
+  });
 
-getColor(Colorurl);
-// getName(Nameurl);
-
-function getColor(Colorurl) {
-    return rp(Colorurl)
-    .then(function(body) {
-            var $ = cheerio.load(body);
-            var lipsticks = [];
-            $("select").each(function() {
-                lipsticks = $(this).text();
-                var lipsticksColor = lipsticks.match(/(?:#|0x)?(?:[0-9a-f]{2}){3,4}/ig);
-                // console.log(lipsticksColor);
-                return rp(Nameurl)
-                .then(function(body) {
-                    var $ = cheerio.load(body);
-                    var lipsticks = [];
-                    var lipsticksName = [];
-                    $("div.shade-picker-float__colors").each(function() {
-                        lipsticks = $(this).toString();
-                        var name  = lipsticks.match(/(>([^>]+)<)/ig);
-                        console.log(name);
-
-                    });
-                });
-            });
-        })
-        .catch(function(err) {
-                console.log("something went wrong...", err);  });
-}
-// (&nbsp;|>([^>]+)>)
-// (>([^>]+)<)
-//
-//
+app.listen(config.port, function () {
+  console.log('hello hobbyist!!!!!!' + config.port);
+});
