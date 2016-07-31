@@ -1,1 +1,1 @@
-# Random-Mac-Lipstick-Angular & Building a Web scraper. 
+# Random-Mac-Lipstick-Angular. 
