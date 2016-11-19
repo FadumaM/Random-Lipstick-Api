@@ -1,5 +1,5 @@
-var databaseUrl = process.env.MONGODB_URI || "mongodb://localhost:27017/mac-lipsticks-scraper";
-
 module.exports = {
-  database: databaseUrl
+  database: process.env.MONGODB_URI || "mongodb://localhost:27017/hobbyist",
+  port: process.env.PORT || 3000,
+  secret: process.env.SECRET || "Mynameiswhatever124373743&&&&&&4dhdjsk",
 };
