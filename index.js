@@ -2,8 +2,17 @@ var express = require("express");
 var morgan = require("morgan");
 var methodOverride = require("method-override");
 var bodyParser = require("body-parser");
+var mongoose = require("mongoose");
+var passport = require("passport");
+var expressJWT = require("express-jwt");
+var qs = require('qs');
 var config = require("./config/config");
 var app = express();
+
+
+mongoose.connect(config.database);
+
+require("./config/passport")(passport);
 
 app.use(morgan('dev'));
 app.use(bodyParser.json());
@@ -17,8 +26,28 @@ app.use(methodOverride(function(req, res) {
     return method;
   }
 }));
+app.use(passport.initialize());
+
+app.use('/api', expressJWT({
+    secret: config.secret
+  })
+  .unless({
+    path: [{
+      url: '/api/login',
+      methods: ['POST']
+    }, {
+      url: '/api/register',
+      methods: ['POST']
+    }]
+  }));
+
 
 app.use(function(err, req, res, next) {
+  if (err.name === 'UnauthorizedError') {
+    return res.status(401).json({
+      message: 'Unauthorized request.'
+    });
+  }
   next();
 });
 
@@ -34,5 +63,5 @@ app.get("/*", function(req, res) {
 });
 
 app.listen(config.port, function() {
-  console.log(`hello !!!! on port ${config.port}`);
+  console.log("hello hobbyist!!!!!!" + config.port);
 });

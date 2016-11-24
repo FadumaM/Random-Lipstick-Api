@@ -1,0 +1,41 @@
+<div class="row quiz category">
+  <div class="question col-md-12" ng-hide='quiz.firstCategory'>
+    <div class="row">
+      <div class="col-xs-12">
+        <h1 class="animated slideInDown">Which statement fits you best?</h1>
+      </div>
+      <ul class="quiz content col-md-12">
+        <li class="box col-sm-12 col-md-2  animated slideInRight" ng-repeat="category in quiz.firstFiveCategories" ng-click="quiz.saveFirstCategory(category)">
+          <p class="text-center">{{ category.text }}</p>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <div class="question col-md-12" ng-hide="!quiz.firstCategory || quiz.secondCategory">
+    <div class="row">
+      <div class="col-xs-12">
+        <h1 class="animated slideInDown">What about these?</h1>
+      </div>
+      <ul class="quiz content col-md-12">
+        <li class="box col-sm-12 col-md-2 animated slideInRight" ng-repeat="category in quiz.secondFiveCategories" ng-click="quiz.saveSecondCategory(category)">
+          <p class="text-center">{{ category.text }}</p>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <div class="question" ng-show='quiz.secondCategory'>
+    <div class="quiz header col-md-12">
+      <h1 class="animated slideInDown">OK, now you have to pick!</h1>
+    </div>
+    <ul class="quiz content col-md-12">
+      <li class="box col-sm-12 col-md-12 animated slideInLeft" ng-repeat="category in quiz.savedCategories" ng-click="quiz.saveFinalChosenCategory(category)">
+        <p class="text-center">{{category.text}}</p>
+      </li>
+    </ul>
+    <div class="quiz button col-md-12">
+      <button ng-show='quiz.chosenCategory' type="button" name="button" class="btn btn-default" ui-sref="hobbyFirstQuestion({id: quiz.chosenCategory._id})">{{quiz.chosenCategory.text}}
+        chosen</button>
+      </div>
+
+    </div>
+  </div>

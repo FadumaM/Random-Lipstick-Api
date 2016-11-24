@@ -1,0 +1,35 @@
+<div class="row quiz hobby">
+  <div class="row question" ng-hide='quiz.firstHobby'>
+    <div class="quiz header col-md-12">
+        <h1 class="animated fadeIn">Which statement fits you best?</h1>
+    </div>
+    <ul class="quiz content col-md-12">
+      <li class="box col-sm-12 col-md-12  animated bounceIn" ng-repeat="hobby in quiz.firstTwoHobbies" ng-click="quiz.saveFirstHobby(hobby)">
+          <p class="text-center">{{hobby.text}}</p>
+      </li>
+    </ul>
+  </div>
+  <div class="row question" ng-hide="!quiz.firstHobby || quiz.secondHobby">
+    <div class="quiz header col-md-12">
+        <h1>What about these?</h1>
+    </div>
+    <ul class="quiz content col-md-12">
+      <li class="box col-sm-12 col-md-12  animated bounceIn" ng-repeat="hobby in quiz.secondTwoHobbies" ng-click="quiz.saveSecondHobby(hobby)">
+          <p class="text-center">{{hobby.text}}</p>
+      </li>
+    </ul>
+  </div>
+  <div class="row question" ng-show='quiz.secondHobby'>
+    <div class="quiz header col-md-12">
+        <h1>OK, now you have to pick!</h1>
+    </div>
+    <ul class="quiz content col-md-12">
+      <li class="box col-sm-12 col-md-12 animated bounceIn" ng-repeat="hobby in quiz.savedHobbies" ng-click="quiz.saveFinalHobby(hobby)">
+          <p class="text-center">{{hobby.text}}</p>
+      </li>
+    </ul>
+    <div class="col-xs-12 col-md-12">
+      <button ng-show='quiz.chosenHobby' type="button" name="button" class="btn btn-default" ui-sref="showHobby({id: quiz.chosenHobby._id})">See your chosen Hobby </button>
+    </div>
+  </div>
+</div>

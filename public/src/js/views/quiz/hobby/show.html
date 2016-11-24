@@ -1,0 +1,8 @@
+<div class="row show">
+
+<div class="jumbotron">
+    <h1> Congratulations  Your Hobby is </h1>
+    <h2>{{hobby.hobby.name}}</h2>
+    <p>{{hobby.hobby.description}}</p>
+          <button class ="btn btn-default" type="button" name="button"  ng-click="hobby.saveHobby(hobby.hobby)" ui-sref="eventIndex({id:  hobby.hobby._id})">Now find your community</button>
+</div>

@@ -1,0 +1,20 @@
+<div class="row home"  id="image" ng-show="!user.checkLoggedIn()">
+  <div class="jumbotron">
+    <h1 class="text-center">Hello, Hobbyist!</h1>
+    <h2 class="text-center">Welcome</h2>
+    <p class="text-center">Discover your new hobby and meet new people today!</p>
+    <p class="text-center">
+      <button class="btn btn-default" ui-sref="login">Log in</button>
+      <button class="btn btn-default"  ui-sref="register">Register</button>
+    </p>
+  </div>
+</div>
+
+<div class="row home" ng-show="user.checkLoggedIn()">
+  <div class="jumbotron quiz">
+    <h1>Find your next hobby</h1>
+    <p class="text-center">
+      <button type="button" class="btn btn-default quiz" name="button" ui-sref="categoryFirstQuestion">Begin Quiz</button>
+    </p>
+  </div>
+</div>

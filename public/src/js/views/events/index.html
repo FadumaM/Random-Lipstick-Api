@@ -1,0 +1,23 @@
+<div class=" row text-center events">
+  <h1 class="text-center">Groups to Join</h1>
+  <div class="row quiz question one">
+    <div class="eachEvent" ng-repeat= "event in events.all">
+      <p><a href="{{event.link}}" target="_blank">{{event.name}}</a></p>
+      <span ng-if="event.group_photo.highres_link">
+       <img ng-src="{{event.group_photo.highres_link}}" alt="photo" />
+      </span>
+      <span ng-if="!event.group_photo.highres_link">
+       <img ng-src="/images/gathering.jpg" alt="photo" />
+      </span>
+    </div>
+    <div class="makeGroup col-md-12 animated fadeIn">
+      <h2>You can also create a group yourself!</h2>
+      <p class="text">
+        Follow the link below!
+      </p>
+      <p>
+      <a href="https://secure.meetup.com/create/" target="_blank">Make a group</a>
+      </p>
+    </div>
+  </div>
+</div>
